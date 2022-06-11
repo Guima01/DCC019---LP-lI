@@ -84,9 +84,7 @@ clearList listInt listBool = do
 masterMind :: [Int] -> Int -> IO ()
 masterMind _  4 =  print("Fim")
 masterMind generatedList value = do 
-    putStrLn "Please enter the code"
-    line <- getLine  
-    let userList = map (read::String->Int) (splitOn  " " line)
+    userList <- loopInput []
     let resultCompleto = compareCode2 userList generatedList
     let newUserList = clearList userList resultCompleto
     let newGeneratedList = clearList generatedList resultCompleto
@@ -96,6 +94,31 @@ masterMind generatedList value = do
     let parcial = countResult resultParcial
     print(show completo ++ " Completo, " ++ show (parcial) ++ " Parcial")
     masterMind generatedList completo
+
+checkInput :: [Int] -> Bool
+checkInput [] = True
+checkInput listInput = do
+    if (head listInput) < 7 && (head listInput) > 0 then
+        checkInput (tail listInput) 
+    else 
+        False
+
+
+loopInput :: [Int] -> IO[Int]
+loopInput resultList = do
+    putStrLn "?"
+    line <- getLine 
+    let userList = map (read::String->Int) (splitOn  " " line)
+    let check = (checkInput userList)
+    if check == True then
+        return userList
+    else
+        loopInput (userList)
+    
+    -- let userList = map (read::String->Int) (splitOn  " " line)
+    -- let check = (checkInput userList)
+    -- loopInput (check) (userList)
+
 
 main :: IO ()
 main = do
