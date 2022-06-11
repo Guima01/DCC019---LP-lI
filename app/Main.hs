@@ -32,7 +32,7 @@ compareElementPartial a b listBool =
     else
         (True: listOfFalse (tail listBool))
 
-listOfFalse :: [Bool] -> [Bool]
+listOfFalse :: [a] -> [Bool]
 listOfFalse []  = []
 listOfFalse a =
     (False :listOfFalse (tail a))
@@ -81,26 +81,26 @@ clearList listInt listBool = do
 
 -- Necessário mudar a forma de verificar a completude e parcialidade da comparação
 -- Solução: Remover os valores ja comparados das listas do usuário e randomicas
-teste :: [Int] -> Int -> IO ()
-teste _  4 =  print("Fim")
-teste generatedList value = do 
+masterMind :: [Int] -> Int -> IO ()
+masterMind _  4 =  print("Fim")
+masterMind generatedList value = do 
     putStrLn "Please enter the code"
     line <- getLine  
     let userList = map (read::String->Int) (splitOn  " " line)
     let resultCompleto = compareCode2 userList generatedList
-    print(resultCompleto)
+    let newUserList = clearList userList resultCompleto
+    let newGeneratedList = clearList generatedList resultCompleto
+    let parcialBool = listOfFalse (newGeneratedList)
     let completo = countResult resultCompleto
-    let resultParcial= comparePartialCode (userList) (generatedList) (resultCompleto)
-    print(resultParcial)
-    let parcial = (countResult resultParcial) - completo
+    let resultParcial= comparePartialCode (newUserList) (newGeneratedList) (parcialBool)
+    let parcial = countResult resultParcial
     print(show completo ++ " Completo, " ++ show (parcial) ++ " Parcial")
-    teste generatedList completo
+    masterMind generatedList completo
 
 main :: IO ()
 main = do
-    -- generatedList <- randomList 4
-    let generatedList = [3,5,1,1]
-    teste generatedList 0
+    generatedList <- randomList 4
+    masterMind generatedList 0
 
 
     
