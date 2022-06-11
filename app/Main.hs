@@ -68,6 +68,16 @@ comparePartialCode userList generatedList listBool = do
     let partialListBoolAdjusted = compareListBool (listBool) (partialListBool)
     comparePartialCode newList generatedList partialListBoolAdjusted
 
+clearList :: [Int] -> [Bool] -> [Int]
+clearList [] [] = []
+clearList listInt listBool = do
+    if (head listBool) == True then
+        clearList (tail listInt) (tail listBool)
+    else 
+        ((head listInt) : (clearList (tail listInt) (tail listBool)))
+
+
+
 
 -- Necessário mudar a forma de verificar a completude e parcialidade da comparação
 -- Solução: Remover os valores ja comparados das listas do usuário e randomicas
