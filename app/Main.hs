@@ -32,18 +32,6 @@ compareElementPartial a b listBool =
     else
         (True: listOfFalse (tail listBool))
 
--- comparePartialCode :: [Int] -> [Int] -> [Bool] -> [Bool]
--- comparePartialCode _ [] _ = []
--- comparePartialCode a b listBool = do
---     let bool2 = compareElementPartial (head a) b listBool
-    -- let a2 = removeFirst a
-    -- let bool2Adjusted = compareListBool (listBool) (bool2)
-    -- show bool2Adjusted
-    -- return (True)
-    -- bool3 <- compareElementPartial (head a2) (b) (bool2Adjusted)
-    -- return bool3
-
-
 listOfFalse :: [Bool] -> [Bool]
 listOfFalse []  = []
 listOfFalse a =
@@ -79,49 +67,30 @@ comparePartialCode userList generatedList listBool = do
     let newList = removeFirst userList
     let partialListBoolAdjusted = compareListBool (listBool) (partialListBool)
     comparePartialCode newList generatedList partialListBoolAdjusted
-    -- let bool3 = compareElementPartial (head a2) (generatedList) (bool2Adjusted)
-    -- let a3 = removeFirst a2
-    -- let bool3Adjusted = compareListBool (bool2Adjusted) (bool3)
-    -- let bool4 = compareElementPartial (head a3) (generatedList) (bool3Adjusted)
-    -- let a4 = removeFirst a3
-    -- let bool4Adjusted = compareListBool (bool3Adjusted) (bool4)
-    -- let bool5 = compareElementPartial (head a4) (generatedList) (bool4Adjusted)
-    -- let a5 = removeFirst a4
-    -- let bool5Adjusted = compareListBool (bool4Adjusted) (bool5)
-    -- bool5Adjusted
-
--- teste :: [Int] -> [Int] -> [Bool] -> [Bool]
--- teste userList generatedList listBool = do 
---     let bool2 = compareElementPartial (head userList) (generatedList) (listBool)
---     let a2 = removeFirst userList
---     let bool2Adjusted = compareListBool (listBool) (bool2)
---     let bool3 = compareElementPartial (head a2) (generatedList) (bool2Adjusted)
---     let a3 = removeFirst a2
---     let bool3Adjusted = compareListBool (bool2Adjusted) (bool3)
---     let bool4 = compareElementPartial (head a3) (generatedList) (bool3Adjusted)
---     let a4 = removeFirst a3
---     let bool4Adjusted = compareListBool (bool3Adjusted) (bool4)
---     let bool5 = compareElementPartial (head a4) (generatedList) (bool4Adjusted)
---     let a5 = removeFirst a4
---     let bool5Adjusted = compareListBool (bool4Adjusted) (bool5)
---     bool5Adjusted
 
 
-
-
-
-main :: IO ()
-main = do
-    let generatedList = [3,6,7,8]
+-- Necessário mudar a forma de verificar a completude e parcialidade da comparação
+-- Solução: Remover os valores ja comparados das listas do usuário e randomicas
+teste :: [Int] -> Int -> IO ()
+teste _  4 =  print("Fim")
+teste generatedList value = do 
     putStrLn "Please enter the code"
     line <- getLine  
     let userList = map (read::String->Int) (splitOn  " " line)
     let resultCompleto = compareCode2 userList generatedList
+    print(resultCompleto)
     let completo = countResult resultCompleto
     let resultParcial= comparePartialCode (userList) (generatedList) (resultCompleto)
+    print(resultParcial)
+    let parcial = (countResult resultParcial) - completo
+    print(show completo ++ " Completo, " ++ show (parcial) ++ " Parcial")
+    teste generatedList completo
+
+main :: IO ()
+main = do
+    -- generatedList <- randomList 4
+    let generatedList = [3,5,1,1]
+    teste generatedList 0
 
 
-    let parcial = countResult resultParcial
-    
-    print(show completo ++ " Completo, " ++ show (parcial-completo) ++ " Parcial")
     
