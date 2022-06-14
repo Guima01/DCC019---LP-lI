@@ -68,9 +68,9 @@ clearList listInt listBool =
 
 
 
-criptoGame :: [Int] -> Int -> IO ()
-criptoGame _  4 =  print("Fim")
-criptoGame generatedList value = do 
+criptoGame :: [Int] -> Int -> Int -> IO ()
+criptoGame _  4 tries =  print("O numero de tentativas foi " ++ show tries)
+criptoGame generatedList value tries = do 
     userList <- loopInput
     let resultCompleto = compareCode userList generatedList
     let newUserList = clearList userList resultCompleto
@@ -80,7 +80,7 @@ criptoGame generatedList value = do
     let resultParcial= comparePartialCode (newUserList) (newGeneratedList) (parcialBool)
     let parcial = countResult resultParcial
     print(show completo ++ " Completo, " ++ show (parcial) ++ " Parcial")
-    criptoGame generatedList completo
+    criptoGame generatedList completo (tries + 1)
 
 checkInput :: [Int] -> Bool
 checkInput [] = True
@@ -113,7 +113,7 @@ loopInput = do
 main :: IO ()
 main = do
     generatedList <- randomList 4
-    criptoGame generatedList 0
+    criptoGame generatedList 0 0
 
 
     
