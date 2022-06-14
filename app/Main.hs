@@ -5,21 +5,13 @@ import System.Random (randomRIO)
 removeFirst :: [Int] -> [Int]
 removeFirst (x:xs) = xs
 
-compareCode2 :: [Int] -> [Int] -> [Bool]
-compareCode2 [] _ = []
-compareCode2 a b = 
+compareCode :: [Int] -> [Int] -> [Bool]
+compareCode [] _ = []
+compareCode a b = 
     if head a == head b then
-        (True:compareCode2 (tail a) (tail b))
+        (True:compareCode (tail a) (tail b))
     else
-        (False:compareCode2 (tail a) (tail b))
-
-compareElementPartial :: Int -> [Int] -> [Bool] -> [Bool]
-compareElementPartial _ [] _ = []
-compareElementPartial a b listBool =
-    if a /= head b || head listBool == True then
-        (False:compareElementPartial a (tail b) (tail listBool))
-    else
-        (True: listOfFalse (tail listBool))
+        (False:compareCode (tail a) (tail b))
 
 listOfFalse :: [a] -> [Bool]
 listOfFalse []  = []
@@ -49,6 +41,14 @@ countResult a =
     else
         countResult (tail a) 
 
+compareElementPartial :: Int -> [Int] -> [Bool] -> [Bool]
+compareElementPartial _ [] _ = []
+compareElementPartial a b listBool =
+    if a /= head b || head listBool == True then
+        (False:compareElementPartial a (tail b) (tail listBool))
+    else
+        (True: listOfFalse (tail listBool))
+
 comparePartialCode :: [Int] -> [Int] -> [Bool] -> [Bool]
 comparePartialCode [] generatedList listBool = listBool
 comparePartialCode userList generatedList listBool = do 
@@ -74,7 +74,7 @@ masterMind :: [Int] -> Int -> IO ()
 masterMind _  4 =  print("Fim")
 masterMind generatedList value = do 
     userList <- loopInput
-    let resultCompleto = compareCode2 userList generatedList
+    let resultCompleto = compareCode userList generatedList
     let newUserList = clearList userList resultCompleto
     let newGeneratedList = clearList generatedList resultCompleto
     let parcialBool = listOfFalse (newGeneratedList)
