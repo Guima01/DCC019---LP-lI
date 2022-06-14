@@ -2,19 +2,8 @@ import Data.List.Split
 import Data.List 
 import System.Random (randomRIO)
 
-sumValue :: Int -> Int -> Int -> Int
-sumValue r t n = if r == t then n + 1 else n
-
 removeFirst :: [Int] -> [Int]
 removeFirst (x:xs) = xs
-
-compareCode :: [Int] -> [Int] -> Int
-compareCode [] _ = 0
-compareCode a b =
-    if head a == head b then
-        1 + compareCode (tail a) (tail b)
-    else
-        compareCode (tail a) (tail b)
 
 compareCode2 :: [Int] -> [Int] -> [Bool]
 compareCode2 [] _ = []
@@ -84,7 +73,7 @@ clearList listInt listBool = do
 masterMind :: [Int] -> Int -> IO ()
 masterMind _  4 =  print("Fim")
 masterMind generatedList value = do 
-    userList <- loopInput []
+    userList <- loopInput
     let resultCompleto = compareCode2 userList generatedList
     let newUserList = clearList userList resultCompleto
     let newGeneratedList = clearList generatedList resultCompleto
@@ -104,8 +93,8 @@ checkInput listInput = do
         False
 
 
-loopInput :: [Int] -> IO[Int]
-loopInput resultList = do
+loopInput :: IO[Int]
+loopInput = do
     putStrLn "?"
     line <- getLine 
     let userList = map (read::String->Int) (splitOn  " " line)
@@ -113,11 +102,7 @@ loopInput resultList = do
     if check == True then
         return userList
     else
-        loopInput (userList)
-    
-    -- let userList = map (read::String->Int) (splitOn  " " line)
-    -- let check = (checkInput userList)
-    -- loopInput (check) (userList)
+        loopInput
 
 
 main :: IO ()
