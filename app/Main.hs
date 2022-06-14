@@ -59,7 +59,7 @@ comparePartialCode userList generatedList listBool = do
 
 clearList :: [Int] -> [Bool] -> [Int]
 clearList [] [] = []
-clearList listInt listBool = do
+clearList listInt listBool =
     if (head listBool) == True then
         clearList (tail listInt) (tail listBool)
     else 
@@ -68,8 +68,6 @@ clearList listInt listBool = do
 
 
 
--- Necessário mudar a forma de verificar a completude e parcialidade da comparação
--- Solução: Remover os valores ja comparados das listas do usuário e randomicas
 criptoGame :: [Int] -> Int -> IO ()
 criptoGame _  4 =  print("Fim")
 criptoGame generatedList value = do 
@@ -92,6 +90,10 @@ checkInput listInput = do
     else 
         False
 
+inputlength :: [Int] -> Integer
+inputlength [] = 0
+inputlength (_:xs) = 1 + inputlength xs
+
 
 loopInput :: IO[Int]
 loopInput = do
@@ -99,9 +101,12 @@ loopInput = do
     line <- getLine 
     let userList = map (read::String->Int) (splitOn  " " line)
     let check = (checkInput userList)
-    if check == True then
+    let lenght = (inputlength userList)
+    if check == True && lenght == 4 then
         return userList
-    else
+    else do
+        putStrLn " "
+        putStrLn "Entrada invalida"
         loopInput
 
 
