@@ -70,9 +70,9 @@ clearList listInt listBool = do
 
 -- Necessário mudar a forma de verificar a completude e parcialidade da comparação
 -- Solução: Remover os valores ja comparados das listas do usuário e randomicas
-masterMind :: [Int] -> Int -> IO ()
-masterMind _  4 =  print("Fim")
-masterMind generatedList value = do 
+criptoGame :: [Int] -> Int -> IO ()
+criptoGame _  4 =  print("Fim")
+criptoGame generatedList value = do 
     userList <- loopInput
     let resultCompleto = compareCode userList generatedList
     let newUserList = clearList userList resultCompleto
@@ -82,7 +82,7 @@ masterMind generatedList value = do
     let resultParcial= comparePartialCode (newUserList) (newGeneratedList) (parcialBool)
     let parcial = countResult resultParcial
     print(show completo ++ " Completo, " ++ show (parcial) ++ " Parcial")
-    masterMind generatedList completo
+    criptoGame generatedList completo
 
 checkInput :: [Int] -> Bool
 checkInput [] = True
@@ -108,7 +108,7 @@ loopInput = do
 main :: IO ()
 main = do
     generatedList <- randomList 4
-    masterMind generatedList 0
+    criptoGame generatedList 0
 
 
     
