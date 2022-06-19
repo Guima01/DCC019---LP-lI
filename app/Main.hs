@@ -1,3 +1,5 @@
+-- Aluno: Guilherme Marques - 201835008
+
 import Data.List.Split
 import Data.List 
 import System.Random (randomRIO)
